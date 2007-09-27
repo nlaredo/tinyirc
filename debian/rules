@@ -1,0 +1,59 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# This file is public domain software, originally written by Joey Hess. 
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+DEB_CFLAGS = -g -O2 -Wall -DPOSIX -DDO_CTCP
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+DEB_CFLAGS += -O0
+else
+DEB_CFLAGS += -O2
+endif
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE) tinyirc CC='gcc' CFLAGS='$(DEB_CFLAGS)' LIBS='-lncurses'
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	-rm -f tinyirc *.o
+	-rm -f build-stamp
+	dh_clean
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	install -m 755 tinyirc $(CURDIR)/debian/tinyirc/usr/bin/tinyirc
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

@@ -1,0 +1,2 @@
+?package(tinyirc): needs="text" section="Apps/Net" \
+    title="TinyIRC" command="/usr/bin/tinyirc"

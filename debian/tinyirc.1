@@ -1,0 +1,30 @@
+.\" -*- nroff -*- vim:ft=nroff
+.TH TINYIRC 1
+.SH "NAME"
+tinyirc \- A
+.I tiny
+IRC client
+.SH "SYNOPSIS"
+.B tinyirc
+.I [-dumb] [nick] [server] [port]
+.SH DESCRIPTION
+.B tinyirc
+is a stripped down IRC client, providing basic IRC commands and an
+curses-based interface.
+.SH OPTIONS
+.TP
+.B -dumb
+Do not use the curses interface; simply write to stdout and read
+commands from stdin.
+.SH "ENVIRONMENT"
+.TP
+.B IRCSERVER
+Sets the default server to connect to.
+.TP
+.B IRCNICK
+Sets the default nickname to use.
+.SH "SEE ALSO"
+RFC1459
+.SH "AUTHOR"
+This manual page was written by Decklin Foster <decklin@red-bean.com>
+for the Debian GNU/Linux system.
