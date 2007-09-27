@@ -1,16 +1,14 @@
-#define RELEASE		"tinyircd 0.1"
+#define RELEASE		"tinyircd 0.1.1"
 /* tinyircd 0.1
-   Copyright (C) 1996 Nathan I. Laredo
+   Copyright (C) 1996-2007 Nathan I. Laredo
 
    This program is modifiable/redistributable under the terms
-   of the GNU General Public Licence.
+   of the GNU General Public Licence version 2.
 
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-   Send your comments and all your spare pocket change to
-   laredo@gnu.ai.mit.edu (Nathan Laredo) or to PSC1, BOX 709,
-   Lackland AFB, TX, 78236-5128
+   Send your comments to laredo@gnu.org (Nathan Laredo)
  */
 #include <stdio.h>
 #ifndef POSIX
