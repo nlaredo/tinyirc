@@ -1,4 +1,4 @@
-#undef AUTOJOIN	 /* "JOIN :#linuxcon\n" */
+#undef AUTOJOIN	 /* "JOIN :#channel\n" */
 #define COMMANDCHAR	'/'
 #define ASCIIHEXCHAR	'@'
 #define HEXASCIICHAR	'#'
@@ -7,25 +7,19 @@
 #define USE_ANSICOLOR
 /* each line of hist adds 512 bytes to resident size */
 #define HISTLEN		8
-#ifdef AUTOJOIN
-#define RELEASE		"TinyIRC 1.1 LinuxConv Edition"
-#else
-#define RELEASE		"TinyIRC 1.1"
-#endif
+#define RELEASE		"TinyIRC 1.1.1"
 /* most bytes to try to read from server at one time */
 #define IB_SIZE		4096
 /* TinyIRC 1.1
-   Copyright (C) 1991-1996 Nathan I. Laredo
+   Copyright (C) 1991-2007 Nathan I. Laredo
 
    This program is modifiable/redistributable under the terms
-   of the GNU General Public Licence.
+   of the GNU General Public Licence version 2
 
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-   Send your comments and all your spare pocket change to
-   laredo@gnu.ai.mit.edu (Nathan Laredo) or to PSC1, BOX 709,
-   Lackland AFB, TX, 78236-5128
+   Send your comments to laredo@gnu.org (Nathan Laredo)
  */
 #include <stdio.h>
 #ifndef POSIX
