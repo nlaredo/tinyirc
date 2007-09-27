@@ -3,15 +3,30 @@
 #
 # I don't wish to assert any rights (copyright) over this makefile
 # but please give me credit if you use my code.
-#
-SERVER = irc.debian.org
+
+DESTDIR		=
+prefix		= /usr
+exec_prefix	= $(prefix)
+man_prefix	= $(prefix)/share
+
+INSTALL		= /usr/bin/install
+INSTALL_BIN	= $(INSTALL) -m 755
+INSTALL_DATA	= $(INSTALL) -m 644
+INSTALL_OBJS	= tinyirc
+
+MANDIR		= $(DESTDIR)$(man_prefix)/man/man1
+BINDIR		= $(DESTDIR)$(exec_prefix)/bin
+
+SERVER = irc.freenode.org
 PORT = 6667
 #
-all:
+all: help gnu
+
+help:
 	## Please use "make target"
 	## where target is one of the following
 	##
-	## aix    hpux    gnu    posix    generic    debug
+	## aix	  hpux	  gnu	 posix	  generic    debug
 	##
 	## If you have trouble with the input line, try a different target
 
@@ -29,8 +44,8 @@ posix:
 	$(MAKE) tinyirc CFLAGS="-O2 -m486 -DPOSIX" LDFLAGS="-s" LIBS=-ltermcap
 
 gnu:
-	$(MAKE) tinyirc CFLAGS="-O2 -pipe -DPOSIX -Wall -Wunused -Wformat" \
-		LDFLAGS=-s LIBS=-ltermcap CC=gcc
+	$(MAKE) tinyirc CFLAGS="-g -O2 -pipe -DPOSIX -Wall -Wunused -Wformat" \
+		LDFLAGS= LIBS=-ltermcap CC=gcc
 
 hpux:
 	$(MAKE) tinyirccv LDFLAGS=-s LIBS=-lcurses
@@ -55,4 +70,18 @@ tinyirc.o: tinyirc.c Makefile
 
 tinyirccv.o: tinyirccv.c Makefile
 	$(CC) $(CFLAGS) $(DEFINES) -c tinyirccv.c -o tinyirccv.o
+
+clean:
+	-rm -f *.o *.exe *[~#]
+
+install-bin:
+	$(INSTALL_BIN) -d $(BINDIR)
+	$(INSTALL_BIN) -s $(INSTALL_OBJS) $(BINDIR)
+
+install-man:
+	$(INSTALL_BIN) -d $(MANDIR)
+	$(INSTALL_DATA) *.1 $(MANDIR)
+
+install: all install-bin
+
 #EOF

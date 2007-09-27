@@ -1,7 +1,9 @@
-#undef AUTOJOIN	"JOIN :#linuxcon\n"
+#undef AUTOJOIN	 /* "JOIN :#linuxcon\n" */
 #define COMMANDCHAR	'/'
 #define ASCIIHEXCHAR	'@'
 #define HEXASCIICHAR	'#'
+#define DEFAULT_LINES	24
+#define DEFAULT_COLUMNS	78
 #define USE_ANSICOLOR
 /* each line of hist adds 512 bytes to resident size */
 #define HISTLEN		8
@@ -845,7 +847,7 @@ int sig;
 	tputs_x(tgoto(CM, 0, LI - 1));
 	fflush(stdout);
     }
-#ifndef __hpux
+#if ! defined(__hpux) && ! defined(__CYGWIN__)
     psignal(sig, "tinyirc");
 #endif
     if (sig != SIGTSTP)
@@ -954,11 +956,13 @@ For details please see the file COPYING.\n", RELEASE);
     if ((my_tty = open("/dev/tty", O_RDWR, 0)) == -1)
 	my_tty = fileno(stdin);
     IRCGECOS[i = 63] = 0;
-/*  if (!getpeername(my_tty, IRCGECOS, &i)) { // inetd
+#ifdef USE_GET_PEERNAME
+    if (!getpeername(my_tty, IRCGECOS, &i)) { /* inetd */
 	strcpy(IRCNAME, IRCGECOS);
 	strcpy(IRCLOGIN, "fromident");
 	setenv("TERM", "vt102", 1);
-    } else { */
+    } else {
+#endif
 	userinfo = getpwuid(getuid());
 	tmp = (char *) getenv("IRCNICK");
 	if (tmp == NULL)
@@ -984,7 +988,9 @@ For details please see the file COPYING.\n", RELEASE);
 	strcpy(IRCGECOS, tmp);
 	if ((tmp = strchr(IRCGECOS, ','))) *tmp = '\0';
 	endutent();
-/*  } */
+#ifdef USE_GET_PEERNAME
+    }
+#endif
     fprintf(stderr, "*** User is %s\n", IRCGECOS);
     printf("*** trying port %d of %s\n\n", IRCPORT, hostname);
     if (makeconnect(hostname) < 0) {
@@ -993,7 +999,8 @@ For details please see the file COPYING.\n", RELEASE);
     }
     idletimer = time(NULL);
     ptr = termcap;
-    if ((term = (char *) getenv("TERM")) == NULL) {
+    term = (char *) getenv("TERM");
+    if (term == NULL) {
 	fprintf(stderr, "tinyirc: TERM not set\n");
 	exit(1);
     }
@@ -1001,10 +1008,28 @@ For details please see the file COPYING.\n", RELEASE);
 	fprintf(stderr, "tinyirc: no termcap entry for %s\n", term);
 	exit(1);
     }
-    if ((CO = tgetnum("co") - 2) < 20)
-	CO = 78;
-    if ((LI = tgetnum("li")) == -1)
-	LI = 24;
+    CO = tgetnum("co");
+    LI = tgetnum("li");
+    if (CO - 2 < 20)
+	CO = DEFAULT_COLUMNS;
+    if (LI == -1)
+	LI = DEFAULT_LINES;
+#if defined(__CYGWIN__)
+    if (1) {
+	int envli = atoi(getenv("LINES"));
+	/*
+	 * Under Cygwin rxvt, the LI value obtained is not correct.
+	 * running resize(1) on terminal will set COLUMNS correctly
+	 */
+	if (envli > 0) {
+	    LI = envli;
+	} else {
+	    printf("*** WARNING: LINES is not set. Try: eval `resize`\n\n");
+	}
+    }
+#endif
+    printf("*** Term: %s %dx%d\n\n", term, CO, LI);
+
     if (!dumb) {
 #define tgs(x) ((char *) tgetstr(x, &ptr))
 	if ((CM = tgs("cm")) == NULL)
