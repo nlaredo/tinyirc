@@ -1,0 +1,12 @@
+tinyirc for Debian
+------------------
+
+Note: The package came with a copy of RFC 1459, however, it added
+about 15k or so to the binary package. That is, as you will note, the
+approximate size of the tinyirc binary itself, so, I decided that it
+would be best to simply point you to the location of the RFC (as its
+somewhat interesting reading) instead of shipping a copy:
+
+    http://www.irchelp.org/irchelp/rfc/
+
+ -- Jay Kominek <jkominek@xtn.net>  Sun, 28 Sep 1997 10:22:08 -0400
