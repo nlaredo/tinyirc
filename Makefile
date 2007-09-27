@@ -4,6 +4,9 @@
 # I don't wish to assert any rights (copyright) over this makefile
 # but please give me credit if you use my code.
 
+# Comment the following line to disable ctcp support
+CTCP		= -DDO_CTCP
+
 DESTDIR		=
 prefix		= /usr
 exec_prefix	= $(prefix)
@@ -57,7 +60,7 @@ ntest:
 ctest:
 	$(MAKE) tinyirccv CFLAGS=-O LDFLAGS=-s LIBS=-lcurses
 
-DEFINES = -DDEFAULTSERVER=\"$(SERVER)\" -DDEFAULTPORT=$(PORT)
+DEFINES = -DDEFAULTSERVER=\"$(SERVER)\" -DDEFAULTPORT=$(PORT) $(CTCP)
 
 tinyirc: tinyirc.o
 	$(CC) $(LDFLAGS) -o tinyirc tinyirc.o $(LIBS)
