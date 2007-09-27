@@ -10,7 +10,8 @@
 #define RELEASE		"TinyIRC 1.1.1"
 /* most bytes to try to read from server at one time */
 #define IB_SIZE		4096
-/* TinyIRC 1.1
+/* TinyIRC 1.1.1
+   $Id:$
    Copyright (C) 1991-2007 Nathan I. Laredo
 
    This program is modifiable/redistributable under the terms
