@@ -1,5 +1,6 @@
 #define RELEASE		"tinyircd 0.1.1"
-/* tinyircd 0.1
+/* tinyircd 0.1.1
+   $Id:$
    Copyright (C) 1996-2007 Nathan I. Laredo
 
    This program is modifiable/redistributable under the terms
