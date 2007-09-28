@@ -11,7 +11,7 @@
 /* most bytes to try to read from server at one time */
 #define IB_SIZE		4096
 /* TinyIRC 1.1.1
-   $Id:$
+   $Id$
    Copyright (C) 1991-2007 Nathan I. Laredo
 
    This program is modifiable/redistributable under the terms
@@ -68,6 +68,7 @@ int my_tcp, sok = 1, my_tty, hline, dumb = 0, CO, LI, column;
 char *tmp, *linein, *CM, *CS, *CE, *SO, *SE, *DC, *ptr, *term, *fromhost,
 *TOK[20], IRCNAME[32], IRCLOGIN[64], IRCGECOS[64], inputbuf[512], ib[IB_SIZE],
  serverdata[512], ch, bp[1024], lineout[512], *hist[HISTLEN], termcap[1024];
+char *envli, *envco;
 int cursd = 0, curli = 0, curx = 0, noinput = 0, reconnect = 1;
 fd_set readfs;
 struct timeval timeout;
@@ -994,7 +995,9 @@ For details please see the file COPYING.\n", RELEASE);
     }
     idletimer = time(NULL);
     ptr = termcap;
-    term = (char *) getenv("TERM");
+    term = getenv("TERM");
+    envli = getenv("LINES");
+    envco = getenv("COLUMNS");
     if (term == NULL) {
 	fprintf(stderr, "tinyirc: TERM not set\n");
 	exit(1);
@@ -1009,20 +1012,14 @@ For details please see the file COPYING.\n", RELEASE);
 	CO = DEFAULT_COLUMNS;
     if (LI == -1)
 	LI = DEFAULT_LINES;
-#if defined(__CYGWIN__)
-    if (1) {
-	int envli = atoi(getenv("LINES"));
-	/*
-	 * Under Cygwin rxvt, the LI value obtained is not correct.
-	 * running resize(1) on terminal will set COLUMNS correctly
-	 */
-	if (envli > 0) {
-	    LI = envli;
-	} else {
-	    printf("*** WARNING: LINES is not set. Try: eval `resize`\n\n");
+    if (envli != NULL && envco != NULL) {
+	/* if both LINES and COLUMNS env variables set, use them instead */
+	int rows = atoi(envli), cols = atoi(envco);
+	if (rows > 0 && cols > 0) {
+	    CO = cols;
+	    LI = rows;
 	}
     }
-#endif
     printf("*** Term: %s %dx%d\n\n", term, CO, LI);
 
     if (!dumb) {

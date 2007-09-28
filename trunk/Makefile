@@ -20,6 +20,8 @@ INSTALL_OBJS	= tinyirc
 MANDIR		= $(DESTDIR)$(man_prefix)/man/man1
 BINDIR		= $(DESTDIR)$(exec_prefix)/bin
 
+INCLUDES	= -I/usr/include/ncurses 
+
 SERVER = irc.freenode.org
 PORT = 6667
 #
@@ -60,7 +62,7 @@ ntest:
 ctest:
 	$(MAKE) tinyirccv CFLAGS=-O LDFLAGS=-s LIBS=-lcurses
 
-DEFINES = -DDEFAULTSERVER=\"$(SERVER)\" -DDEFAULTPORT=$(PORT) $(CTCP)
+DEFINES = -DDEFAULTSERVER=\"$(SERVER)\" -DDEFAULTPORT=$(PORT) $(CTCP) $(INCLUDES)
 
 tinyirc: tinyirc.o
 	$(CC) $(LDFLAGS) -o tinyirc tinyirc.o $(LIBS)
