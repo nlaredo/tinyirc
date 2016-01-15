@@ -1,0 +1,1 @@
+TinyIRC is an irc client originally designed in a time when people were charged for CPU time on shared servers.  That time has long since passed, but since people are still finding uses for this client, it is now maintained on google code.
